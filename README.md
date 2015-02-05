@@ -11,6 +11,7 @@ params: <br>
 然后引入<br>
 ```javascript
 <script src="slide.js"></script>
+```
 最后<br>
 ```javascript
 var slide = new Slide({
@@ -23,3 +24,4 @@ var slide = new Slide({
 	});
 
 	slide.init();
+	```
