@@ -9,11 +9,11 @@ params: <br>
 * `interval` 幻灯片间隔<br>
 * `promptStyle` 显示方式<br>
 
-然后引入<br>
+引入<br>
 ```javascript
 <script src="slide.js"></script>
 ```
-最后<br>
+写一点点<br>
 ```javascript
 var slide = new Slide({
 		target: ".slide",
