@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="X-UA-Compatible" content="IE=Edge, chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>路再长，也长不过我35码半的脚步</title>
+<link rel="shortcut icon" href="http://hanyang.me/images/favicon.ico" />
+<style>
+* {
+	padding: 0;
+	margin: 0;
+}
+body {
+	height: 1000px;
+}
+h1 {
+	color: #F14382;
+	text-align: center;
+	margin-bottom: 60px;
+}
+.slide {
+	width: 100%;
+	margin-top: 200px;
+	overflow: hidden;
+	position: relative;
+}
+.slide > div {
+	font-size: 0;
+}
+.slide a {
+	display: inline-block;
+	position: relative;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+.slide img {
+	/*display: block;*/
+	position: relative;
+}
+.slide > p {
+	position: absolute;
+	bottom: 5%;
+	right: 5%;
+	color: #FFF;
+}
+.slide .prompt-p {
+	right: 50%;
+	-webkit-transform: translateX(50%);
+}
+.prompt-span {
+	display: inline-block;
+	width: 8px;
+	height: 8px;
+	margin-left: 10px;
+	border-radius: 100%;
+	background-color: #FFF;
+}
+.prompt-span-current {
+	background-color: #F14382;
+}
+</style>
+<script src="slide.js"></script>
+<script>
+/**
+***┏┓　　　┏┓
+*┏┛┻━━━┛┻┓ 
+*┃　　　　　　　┃ 　 
+*┃　　　━　　　┃ 
+*┃　┳┛　┗┳　┃ 
+*┃　　　　　　　┃ 
+*┃　　　┻　　　┃ 
+*┃　　　　　　　┃ 
+*┗━┓　　　┏━┛ 
+*****┃　　　┃Code is far away from bug with the animal protecting.　　　　　　　　　　 
+*****┃　　　┃神兽保护，代码无bug。
+*****┃　　　┗━━━┓ 
+*****┃　　　　　　　┣┓ 
+*****┃　　　　　　　┏┛ 
+*****┗┓┓┏━┳┓┏┛ 
+*******┃┫┫　┃┫┫ 
+*******┗┻┛　┗┻┛  
+*/
+
+document.addEventListener("DOMContentLoaded", function () {
+	var slide = new Slide({
+		target: ".slide",
+		imgs: ["images/a.jpg", "images/b.jpg", "images/c.jpg", "images/d.jpg", "images/e.jpg"],
+		// link: true,
+		// links: ["baidu.com", "baidu.com", "baidu.com", "baidu.com", "baidu.com"],
+		interval: 3000,
+		promptStyle: "text"
+	});
+
+	slide.init();
+}, false);
+</script>
+</head>
+
+<body>
+	<!-- <h1>hanyang</h1> -->
+	<div class="slide"></div>
+</body>
+</html>
