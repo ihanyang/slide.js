@@ -25,4 +25,4 @@ var slide = new Slide({
 	});
 
 	slide.init();
-	```
+	```javascript
