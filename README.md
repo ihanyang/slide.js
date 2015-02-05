@@ -8,3 +8,18 @@ params: <br>
 * `links` 超链接数组<br>
 * `interval` 幻灯片间隔<br>
 * `promptStyle` 显示方式<br>
+然后引入<br>
+```javascript
+<script src="slide.js"></script>
+最后<br>
+```javascript
+var slide = new Slide({
+		target: ".slide",
+		imgs: ["images/a.jpg", "images/b.jpg", "images/c.jpg", "images/d.jpg", "images/e.jpg"],
+		// link: true,
+		// links: ["baidu.com", "baidu.com", "baidu.com", "baidu.com", "baidu.com"],
+		interval: 3000,
+		promptStyle: "text"
+	});
+
+	slide.init();
