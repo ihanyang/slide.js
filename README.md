@@ -16,12 +16,12 @@ params: <br>
 写一点点<br>
 ```javascript
 var slide = new Slide({
-		target: ".slide",
-		imgs: ["images/a.jpg", "images/b.jpg", "images/c.jpg", "images/d.jpg", "images/e.jpg"],
-		// link: true,
-		// links: ["baidu.com", "baidu.com", "baidu.com", "baidu.com", "baidu.com"],
-		interval: 3000,
-		promptStyle: "text"
-	});
+	target: ".slide",
+	imgs: ["images/a.jpg", "images/b.jpg", "images/c.jpg", "images/d.jpg", "images/e.jpg"],
+	// link: true,
+	// links: ["baidu.com", "baidu.com", "baidu.com", "baidu.com", "baidu.com"],
+	interval: 3000,
+	promptStyle: "text"
+});
 
-	slide.init();
+slide.init();
