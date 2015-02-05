@@ -3,8 +3,8 @@ slide.js 是专为移动端设计的幻灯片组件，性能高，稳定性强�
 # <a href="http://hanyang.me/demo/slide">Try the demo</a>
 ### Usage:
 params: <br>
-    * target 幻灯片的容器<br>
-    * imgs 图片数组<br>
-    * links 超链接数组<br>
-    * interval 幻灯片间隔<br>
-    * promptStyle 显示方式<br>
+    * `target` 幻灯片的容器<br>
+    * `imgs` 图片数组<br>
+    * `links` 超链接数组<br>
+    * `interval` 幻灯片间隔<br>
+    * `promptStyle` 显示方式<br>
