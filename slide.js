@@ -1,6 +1,7 @@
 /**
  *	@author hanyang
  *  date    2014-11-30
+ *  email   513915503@qq.com
  *
  *  @param {Object} slide The operation object
  *  @param {Array} imgs The picture collection
@@ -90,6 +91,18 @@ Slide.prototype = {
 		this.timer = setInterval(function () {
 			that.swipe(that.clientWidth);
 		}, this.interval);
+
+		// window.onblur = function () {
+		// 	clearInterval(that.timer);
+		// };
+		// window.onfocus = function () {
+		// 	console.log(111);
+		// 	clearInterval(that.timer);
+		// 	that.timer = setInterval(function () {
+		// 		that.swipe(that.clientWidth);
+		// 	}, that.interval);
+		// };
+		
 		this.slideWrap.clientWidths = this.clientWidth;
 		this.slideWrap.x = this.x;
 		window.slide = this;
@@ -180,7 +193,7 @@ Slide.prototype = {
 		this.startX = e.touches[0].clientX;
 		this.startY = e.touches[0].clientY;
 		this.direction = false;
-		this.aaa = true;
+		this.first = true;
 
 		this.nextIndex = + this.getAttribute("data-index") + 1;
 		if (this.nextIndex === this.parentNode.children.length) {
@@ -193,52 +206,42 @@ Slide.prototype = {
 		}
 	},
 	touchMove: function (e) {
-		//if (this.direction) {
-		if (this.aaa) {
+		if (this.first) {
 			if (Math.abs(e.touches[0].clientX - this.startX) > 0 && Math.abs(e.touches[0].clientY - this.startY) < 10) {
 				this.direction = true;
-				this.aaa = false;
+				this.first = false;
 				clearInterval(slide.timer);
 			} else {
-				this.aaa = false;
+				this.first = false;
 				return false;
 			}
 		}
-		
-		//if (Math.abs(e.touches[0].clientX - this.startX) > 0 && Math.abs(e.touches[0].clientY - this.startY) < 10) {
-			if (this.direction) {
-				console.log("左右");
-				this.direction = true;
-				
-				//this.index = (e.touches[0].clientX - this.startX) > 0 ? this.previousIndex : this.nextIndex;
-				this.style["-webkit-transition"] = "none";
-				this.style["-webkit-transform"] = "translate3d(" + (e.touches[0].clientX - this.startX) + "px, 0, 0)";
-				this.parentNode.children[this.nextIndex].style["-webkit-transition"] = "none";
-				this.parentNode.children[this.previousIndex].style["-webkit-transition"] = "none";
 
-				if (e.touches[0].clientX - this.startX > 0) {
-					this.parentNode.children[this.nextIndex].style["-webkit-transform"] = "translate3d(" + (this.parentNode.clientWidths + (e.touches[0].clientX - this.startX)) + "px, 0, 0)";
-					this.parentNode.children[this.previousIndex].style["-webkit-transform"] = "translate3d(" + -(this.parentNode.clientWidths - (e.touches[0].clientX - this.startX)) + "px, 0, 0)";
-				} else {
-					this.parentNode.children[this.nextIndex].style["-webkit-transform"] = "translate3d(" + (this.parentNode.clientWidths - (this.startX - e.touches[0].clientX)) + "px, 0, 0)";
-					this.parentNode.children[this.previousIndex].style["-webkit-transform"] = "translate3d(" + -(this.parentNode.clientWidths + (this.startX - e.touches[0].clientX)) + "px, 0, 0)";
-				}
+		if (this.direction) {
+			console.log("左右");
+			this.direction = true;
+			this.style["-webkit-transition"] = "none";
+			this.style["-webkit-transform"] = "translate3d(" + (e.touches[0].clientX - this.startX) + "px, 0, 0)";
+			this.parentNode.children[this.nextIndex].style["-webkit-transition"] = "none";
+			this.parentNode.children[this.previousIndex].style["-webkit-transition"] = "none";
 
-				e.preventDefault();
+			if (e.touches[0].clientX - this.startX > 0) {
+				this.parentNode.children[this.nextIndex].style["-webkit-transform"] = "translate3d(" + (this.parentNode.clientWidths + (e.touches[0].clientX - this.startX)) + "px, 0, 0)";
+				this.parentNode.children[this.previousIndex].style["-webkit-transform"] = "translate3d(" + -(this.parentNode.clientWidths - (e.touches[0].clientX - this.startX)) + "px, 0, 0)";
+			} else {
+				this.parentNode.children[this.nextIndex].style["-webkit-transform"] = "translate3d(" + (this.parentNode.clientWidths - (this.startX - e.touches[0].clientX)) + "px, 0, 0)";
+				this.parentNode.children[this.previousIndex].style["-webkit-transform"] = "translate3d(" + -(this.parentNode.clientWidths + (this.startX - e.touches[0].clientX)) + "px, 0, 0)";
 			}
-		//} else {
 
-			// if (this.direction) {
-			// 	e.preventDefault();
-			// }
-		//}
+			e.preventDefault();
+		}
 	},
 	touchEnd: function (e) {
-		//this.indexs = this.index + 1 === this.parentNode.children.length ? 0 : this.index + 1;
 		if (this.direction) {
 			if (Math.abs(e.changedTouches[0].clientX - this.startX) >= this.parentNode.clientWidths / 2) {
 				this.style["-webkit-transition"] = "all 0.3s ease";
 				this.style["-webkit-transform"] = e.changedTouches[0].clientX - this.startX > 0 ? "translate3d(" + this.parentNode.clientWidths + "px, 0, 0)" : "translate3d(" + -this.parentNode.clientWidths + "px, 0, 0)";
+
 				if (e.changedTouches[0].clientX - this.startX > 0) {
 					this.parentNode.children[this.nextIndex].style["-webkit-transition"] = "none";
 					this.parentNode.children[this.nextIndex].style["-webkit-transform"] = "translate3d(" + -this.parentNode.clientWidths + "px, 0, 0)";
@@ -254,10 +257,6 @@ Slide.prototype = {
 					this.parentNode.children[this.nextIndex + 1 === this.parentNode.children.length ? 0 : this.nextIndex + 1].style["-webkit-transition"] = "none";
 					this.parentNode.children[this.nextIndex + 1 === this.parentNode.children.length ? 0 : this.nextIndex + 1].style["-webkit-transform"] = "translate3d(" + this.parentNode.clientWidths + "px, 0, 0)";
 				}
-				//this.parentNode.children[this.nextIndex].style["-webkit-transition"] = "all 0.3s ease";
-				//this.parentNode.children[this.nextIndex].style["-webkit-transform"] = e.changedTouches[0].clientX - this.startX > 0 ? "translate3d(" + -this.parentNode.clientWidths + "px, 0, 0)" : "translate3d(" + 0 + "px, 0, 0)";
-				//this.parentNode.children[this.previousIndex].style["-webkit-transition"] = "all 0.3s ease";//e.changedTouches[0].clientX - this.startX > 0 ? "all 0.3s ease" : "none";
-				//this.parentNode.children[this.previousIndex].style["-webkit-transform"] = e.changedTouches[0].clientX - this.startX > 0 ? "translate3d(" + 0 + "px, 0, 0)" : "translate3d(" + -this.parentNode.clientWidths + "px, 0, 0)";
 
 				if (slide.promptStyle === "text") {
 					if (e.changedTouches[0].clientX - this.startX > 0) {
@@ -291,17 +290,13 @@ Slide.prototype = {
 				}
 			} else {
 				this.style["-webkit-transition"] = "all 0.3s ease";
-				this.parentNode.children[this.nextIndex].style["-webkit-transition"] = "all 0.3s ease";
-				this.parentNode.children[this.previousIndex].style["-webkit-transition"] = "all 0.3s ease";
 				this.style["-webkit-transform"] = "translate3d(" + 0 + "px, 0, 0)";
-				//if (e.changedTouches[0].clientX - this.startX > 0) {
 
-				//} else {
-					this.parentNode.children[this.nextIndex].style["-webkit-transform"] = "translate3d(" + this.parentNode.clientWidths + "px, 0, 0)";
-					this.parentNode.children[this.previousIndex].style["-webkit-transform"] = "translate3d(" + -this.parentNode.clientWidths + "px, 0, 0)";
-				//}
-				//this.parentNode.children[this.index].style["-webkit-transition"] = "all 0.3s ease";
-				//this.parentNode.children[this.index].style["-webkit-transform"] = e.changedTouches[0].clientX - this.startX > 0 ? "translate3d(" + -this.parentNode.clientWidths + "px, 0, 0)" : "translate3d(" + this.parentNode.clientWidths + "px, 0, 0)";
+				this.parentNode.children[this.nextIndex].style["-webkit-transition"] = "all 0.3s ease";
+				this.parentNode.children[this.nextIndex].style["-webkit-transform"] = "translate3d(" + this.parentNode.clientWidths + "px, 0, 0)";
+
+				this.parentNode.children[this.previousIndex].style["-webkit-transition"] = "all 0.3s ease";
+				this.parentNode.children[this.previousIndex].style["-webkit-transform"] = "translate3d(" + -this.parentNode.clientWidths + "px, 0, 0)";
 			}
 
 			slide.timer = setInterval(function () {
