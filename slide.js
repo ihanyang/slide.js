@@ -1,5 +1,5 @@
 /**
- *	@author hanyang
+ *  @author hanyang
  *  date    2014-11-30
  *  email   513915503@qq.com
  *
@@ -147,9 +147,6 @@ Slide.prototype = {
 		}
 	},
 	promptText: function () {
-		// var p,
-		// 	span = null;
-
 		if (this.isPromptTextInit) {
 			this.p = document.createElement("p");
 			this.p.innerHTML = "<span>1</span>/" + this.length;
