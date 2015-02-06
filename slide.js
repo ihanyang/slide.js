@@ -1,5 +1,5 @@
 /**
- *	author  hanyang
+ *  author   hanyang
  *  date     2014-11-30
  *  email    513915503@qq.com
  **/
@@ -11,20 +11,14 @@
 		this.slide = typeof config.target === "string" ? document.querySelector(config.target) : config.target;
 		this.imgs = config.imgs;
 		this.length = config.imgs.length;
-		//this.link = config.link;
 		this.links = config.links;
 		this.interval = config.interval || 3000;
 		this.promptStyle = config.promptStyle || "text";
 		this.x = 1;
 		this.renderer = true;
-		this.slideList = null;
-		this.slideItems = null;
 		this.clientWidth = document.documentElement.clientWidth || document.body.clientWidth;
-		this.timer = null;
 		this.isPromptText = true;
 		this.isPromptList = true;
-		this.p = null;
-		this.span = null;
 	};
 	Slide.prototype = {
 		init: function() {
@@ -32,6 +26,7 @@
 				slideListHTML = "",
 				that = this;
 
+			// this.slideList 是幻灯片列表的父元素
 			this.slideList = document.createElement("div");
 
 			if (this.links) {
@@ -41,6 +36,8 @@
 
 				this.slideList.innerHTML = slideListHTML;
 				this.slide.appendChild(this.slideList);
+
+				// this.slideItems 是 幻灯片列表的个体
 				this.slideItems = this.slide.querySelectorAll("a");
 			} else {
 				for (i = 0; i < this.length; i++) {
