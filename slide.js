@@ -15,11 +15,11 @@
 		this.interval = config.interval || 3000;
 		this.promptStyle = config.promptStyle || "text";
 		this.x = 1;
-		this.renderer = true;
 		this.clientWidth = document.documentElement.clientWidth || document.body.clientWidth;
 		this.isPromptText = true;
 		this.isPromptList = true;
 	};
+
 	Slide.prototype = {
 		init: function() {
 			var i,
@@ -53,7 +53,7 @@
 
 			for (i = 0; i < this.length; i++) {
 				this.slideItems[i].style.width = this.clientWidth + "px";
-				this.slideItems[i].style.left = - i * this.clientWidth + "px";
+				this.slideItems[i].style.left = -i * this.clientWidth + "px";
 
 				if (i === 0) {
 					this.slideItems[i].style["-webkit-transform"] = "translate3d(0, 0, 0)";
@@ -102,12 +102,10 @@
 		swipe: function() {
 			var i;
 
-			if (this.renderer) {
+			if (! this.slideItems[0].style["-webkit-transition"]) {
 				for (i = 0; i < this.length; i++) {
 					this.slideItems[i].style["-webkit-transition"] = "all 0.3s ease";
 				}
-
-				this.renderer = false;
 			}
 
 			this.slideItems[this.x - 1].style["-webkit-transform"] = "translate3d(" + -this.clientWidth + "px, 0, 0)";
