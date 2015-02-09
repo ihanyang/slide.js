@@ -104,6 +104,19 @@
 			// 	}, that.interval);
 			// };
 
+			document.addEventListener("visibilitychange", function () {
+				if (document.visibilityState == "visible") {
+					//console.log("页面可见");
+					//clearInterval(that.timer);
+					that.timer = setInterval(function () {
+						that.swipe(that.clientWidth);
+					}, that.interval);
+				} else (document.visibilityState == "hidden") {
+					//console.log("页面隐藏");
+					clearInterval(that.timer);
+				}
+			}, false);
+
 			// 挂载 this对象
 			this.slideList.slide = this;
 		},
