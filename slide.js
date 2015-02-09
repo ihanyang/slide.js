@@ -19,7 +19,7 @@
 		this.slide = typeof config.target === "string" ? document.querySelector(config.target) : config.target;
 		this.imgs = config.imgs;
 		this.length = config.imgs.length;
-		this.links = config.links;
+		this.contents = config.contents;
 		this.interval = config.interval || 3000;
 		this.promptStyle = config.promptStyle || "text";
 		this.x = 1;
@@ -37,9 +37,9 @@
 			// this.slideList 是幻灯片列表的父元素
 			this.slideList = document.createElement("div");
 
-			if (this.links) {
+			if (this.contents) {
 				for (i = 0; i < this.length; i++) {
-					slideListHTML += "<a href=" + this.links[i] + " data-index=" + i + "><img src=" + this.imgs[i] + " width='100%' />" + "</a>";
+					slideListHTML += "<a href=" + this.contents[i] + " data-index=" + i + "><img src=" + this.imgs[i] + " width='100%' />" + "</a>";
 				}
 
 				this.slideList.innerHTML = slideListHTML;
