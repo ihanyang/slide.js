@@ -4,7 +4,15 @@
  *  email    513915503@qq.com
  **/
 
-(function() {
+(function(root, factory) {
+	if (typeof define === "function" && define.amd) {
+		define(factory);
+	} else if (typeof exports === "object") {
+		module.exports = factory;
+	} else {
+		root.Slide = factory(root);
+	}
+})(this, function(root) {
 	"use strict";
 
 	var Slide = function(config) {
@@ -102,7 +110,7 @@
 		swipe: function() {
 			var i;
 
-			if (! this.slideItems[0].style["-webkit-transition"]) {
+			if (!this.slideItems[0].style["-webkit-transition"]) {
 				for (i = 0; i < this.length; i++) {
 					this.slideItems[i].style["-webkit-transition"] = "all 0.3s ease";
 				}
@@ -307,5 +315,5 @@
 	// 		return Slide;
 	// 	});
 	// }
-	window.Slide = Slide;
-})();
+	return Slide;
+});
