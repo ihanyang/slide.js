@@ -3,6 +3,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
+<meta name="full-screen" content="yes">
 <meta name="X-UA-Compatible" content="IE=Edge, chrome=1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>路再长，也长不过我35码半的脚步</title>
@@ -13,7 +14,7 @@
 	margin: 0;
 }
 body {
-	height: 1000px;
+	height: 800px;
 }
 h1 {
 	color: #F14382;
@@ -60,7 +61,7 @@ h1 {
 	background-color: #F14382;
 }
 </style>
-<script src="slide.js"></script>
+<script data-main="config.js" src="require.js"></script>
 <script>
 /**
 ***┏┓　　　┏┓
@@ -82,23 +83,22 @@ h1 {
 *******┗┻┛　┗┻┛  
 */
 
-document.addEventListener("DOMContentLoaded", function () {
+require(["slide"], function (Slide) {
 	var slide = new Slide({
 		target: ".slide",
 		imgs: ["images/a.jpg", "images/b.jpg", "images/c.jpg", "images/d.jpg", "images/e.jpg"],
-		// link: true,
-		// links: ["baidu.com", "baidu.com", "baidu.com", "baidu.com", "baidu.com"],
+		contents: ["http://baidu.com", "http://baidu.com", "http://baidu.com", "http://baidu.com", "http://baidu.com"],
 		interval: 3000,
 		promptStyle: "text"
 	});
 
 	slide.init();
-}, false);
+	console.log("成功")
+});
 </script>
 </head>
 
 <body>
-	<!-- <h1>hanyang</h1> -->
 	<div class="slide"></div>
 </body>
 </html>
