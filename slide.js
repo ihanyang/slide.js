@@ -310,10 +310,5 @@
 		}
 	};
 
-	// if (typeof define === "function" && define.amd) {
-	// 	define("Slide", [], function() {
-	// 		return Slide;
-	// 	});
-	// }
 	return Slide;
 });
