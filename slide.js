@@ -68,8 +68,6 @@
 
 				// 挂载 touch 事件
 				this.slideItems[i].addEventListener("touchstart", this.touchStart, false);
-				this.slideItems[i].addEventListener("touchmove", this.touchMove, false);
-				this.slideItems[i].addEventListener("touchend", this.touchEnd, false);
 			}
 
 			if (this.promptStyle === "text") {
@@ -82,7 +80,7 @@
 			}
 
 			this.timer = setInterval(function() {
-				that.swipe(that.clientWidth);
+				that.swipe();
 			}, this.interval);
 
 			// window.onblur = function () {
@@ -137,6 +135,8 @@
 			} else {
 				this.promptList();
 			}
+
+			document.querySelector("h1").innerHTML = this.x;
 		},
 		promptText: function() {
 			if (this.isPromptText) {
@@ -178,19 +178,24 @@
 			this.span[this.x - 1].className += " prompt-span-current";
 		},
 		touchStart: function(e) {
-			this.startX = e.touches[0].clientX;
-			this.startY = e.touches[0].clientY;
-			this.direction = false;
-			this.first = true;
+			if (/3d\(0/.test(this.style["-webkit-transform"])) {
+				this.startX = e.touches[0].clientX;
+				this.startY = e.touches[0].clientY;
+				this.direction = false;
+				this.first = true;
 
-			this.nextIndex = +this.getAttribute("data-index") + 1;
-			if (this.nextIndex === this.parentNode.children.length) {
-				this.nextIndex = 0;
-			}
+				this.nextIndex = +this.getAttribute("data-index") + 1;
+				if (this.nextIndex === this.parentNode.children.length) {
+					this.nextIndex = 0;
+				}
 
-			this.previousIndex = this.getAttribute("data-index") - 1;
-			if (this.previousIndex === -1) {
-				this.previousIndex = this.parentNode.children.length - 1;
+				this.previousIndex = this.getAttribute("data-index") - 1;
+				if (this.previousIndex === -1) {
+					this.previousIndex = this.parentNode.children.length - 1;
+				}
+
+				this.addEventListener("touchmove", this.parentNode.slide.touchMove, false);
+				this.addEventListener("touchend", this.parentNode.slide.touchEnd, false);
 			}
 		},
 		touchMove: function(e) {
@@ -251,8 +256,10 @@
 					if (slide.promptStyle === "text") {
 						if (e.changedTouches[0].clientX - this.startX > 0) {
 							slide.span.innerHTML = slide.x = slide.x - 1 === 0 ? slide.length : slide.x - 1;
+							document.querySelector("h1").innerHTML = slide.x;
 						} else {
 							slide.span.innerHTML = slide.x = slide.x + 1 > slide.length ? 1 : slide.x + 1;
+							document.querySelector("h1").innerHTML = slide.x;
 						}
 
 					} else {
@@ -296,5 +303,10 @@
 		}
 	};
 
+	// if (typeof define === "function" && define.amd) {
+	// 	define("Slide", [], function() {
+	// 		return Slide;
+	// 	});
+	// }
 	window.Slide = Slide;
 })();
