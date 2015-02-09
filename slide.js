@@ -111,7 +111,7 @@
 					that.timer = setInterval(function () {
 						that.swipe(that.clientWidth);
 					}, that.interval);
-				} else (document.visibilityState == "hidden") {
+				} else if (document.visibilityState == "hidden") {
 					//console.log("页面隐藏");
 					clearInterval(that.timer);
 				}
