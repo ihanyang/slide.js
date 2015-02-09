@@ -68,6 +68,8 @@
 
 				// 挂载 touch 事件
 				this.slideItems[i].addEventListener("touchstart", this.touchStart, false);
+				//this.slideItems[i].addEventListener("touchmove", this.touchMove, false);
+				//this.slideItems[i].addEventListener("touchend", this.touchEnd, false);
 			}
 
 			if (this.promptStyle === "text") {
@@ -135,8 +137,6 @@
 			} else {
 				this.promptList();
 			}
-
-			document.querySelector("h1").innerHTML = this.x;
 		},
 		promptText: function() {
 			if (this.isPromptText) {
@@ -178,6 +178,7 @@
 			this.span[this.x - 1].className += " prompt-span-current";
 		},
 		touchStart: function(e) {
+			// 避免定时器和手动触摸同时进行
 			if (/3d\(0/.test(this.style["-webkit-transform"])) {
 				this.startX = e.touches[0].clientX;
 				this.startY = e.touches[0].clientY;
@@ -256,10 +257,8 @@
 					if (slide.promptStyle === "text") {
 						if (e.changedTouches[0].clientX - this.startX > 0) {
 							slide.span.innerHTML = slide.x = slide.x - 1 === 0 ? slide.length : slide.x - 1;
-							document.querySelector("h1").innerHTML = slide.x;
 						} else {
 							slide.span.innerHTML = slide.x = slide.x + 1 > slide.length ? 1 : slide.x + 1;
-							document.querySelector("h1").innerHTML = slide.x;
 						}
 
 					} else {
