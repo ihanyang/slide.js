@@ -76,8 +76,6 @@
 
 				// 挂载 touch 事件
 				this.slideItems[i].addEventListener("touchstart", this.touchStart, false);
-				//this.slideItems[i].addEventListener("touchmove", this.touchMove, false);
-				//this.slideItems[i].addEventListener("touchend", this.touchEnd, false);
 			}
 
 			if (this.promptStyle === "text") {
@@ -92,27 +90,14 @@
 			this.timer = setInterval(function() {
 				that.swipe();
 			}, this.interval);
-
-			// window.onblur = function () {
-			// 	clearInterval(that.timer);
-			// };
-			// window.onfocus = function () {
-			// 	console.log(111);
-			// 	clearInterval(that.timer);
-			// 	that.timer = setInterval(function () {
-			// 		that.swipe(that.clientWidth);
-			// 	}, that.interval);
-			// };
-
-			document.addEventListener("visibilitychange", function () {
-				if (document.visibilityState == "visible") {
-					//console.log("页面可见");
-					//clearInterval(that.timer);
+			document.addEventListener("webkitvisibilitychange", function () {
+				if (document.webkitVisibilityState == "visible") {
+					console.log("页面可见");
 					that.timer = setInterval(function () {
 						that.swipe(that.clientWidth);
 					}, that.interval);
-				} else if (document.visibilityState == "hidden") {
-					//console.log("页面隐藏");
+				} else if (document.webkitVisibilityState == "hidden") {
+					console.log("页面隐藏");
 					clearInterval(that.timer);
 				}
 			}, false);
