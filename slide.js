@@ -90,10 +90,11 @@
 			this.timer = setInterval(function() {
 				that.swipe();
 			}, this.interval);
-			document.addEventListener("webkitvisibilitychange", function () {
+			
+			document.addEventListener("webkitvisibilitychange", function() {
 				if (document.webkitVisibilityState == "visible") {
 					console.log("页面可见");
-					that.timer = setInterval(function () {
+					that.timer = setInterval(function() {
 						that.swipe(that.clientWidth);
 					}, that.interval);
 				} else if (document.webkitVisibilityState == "hidden") {
@@ -201,6 +202,8 @@
 					this.previousIndex = this.parentNode.children.length - 1;
 				}
 
+				this.time = + new Date();
+
 				this.addEventListener("touchmove", this.parentNode.slide.touchMove, false);
 				this.addEventListener("touchend", this.parentNode.slide.touchEnd, false);
 			}
@@ -236,75 +239,83 @@
 				e.preventDefault();
 			}
 		},
+		move: function(e, slide) {
+			this.style["-webkit-transition"] = "all 0.3s ease";
+			this.style["-webkit-transform"] = e.changedTouches[0].clientX - this.startX > 0 ? "translate3d(" + this.clientWidth + "px, 0, 0)" : "translate3d(" + -this.clientWidth + "px, 0, 0)";
+
+			if (e.changedTouches[0].clientX - this.startX > 0) {
+				this.parentNode.children[this.nextIndex].style["-webkit-transition"] = "none";
+				this.parentNode.children[this.nextIndex].style["-webkit-transform"] = "translate3d(" + -this.clientWidth + "px, 0, 0)";
+
+				this.parentNode.children[this.previousIndex].style["-webkit-transition"] = "all 0.3s ease";
+				this.parentNode.children[this.previousIndex].style["-webkit-transform"] = "translate3d(" + 0 + "px, 0, 0)";
+			} else {
+				this.parentNode.children[this.nextIndex].style["-webkit-transition"] = "all 0.3s ease";
+				this.parentNode.children[this.nextIndex].style["-webkit-transform"] = "translate3d(" + 0 + "px, 0, 0)";
+
+				this.parentNode.children[this.previousIndex].style["-webkit-transform"] = "translate3d(" + -this.clientWidth + "px, 0, 0)";
+
+				this.parentNode.children[this.nextIndex + 1 === this.parentNode.children.length ? 0 : this.nextIndex + 1].style["-webkit-transition"] = "none";
+				this.parentNode.children[this.nextIndex + 1 === this.parentNode.children.length ? 0 : this.nextIndex + 1].style["-webkit-transform"] = "translate3d(" + this.clientWidth + "px, 0, 0)";
+			}
+
+			if (slide.promptStyle === "text") {
+				if (e.changedTouches[0].clientX - this.startX > 0) {
+					slide.span.innerHTML = slide.x = slide.x - 1 === 0 ? slide.length : slide.x - 1;
+				} else {
+					slide.span.innerHTML = slide.x = slide.x + 1 > slide.length ? 1 : slide.x + 1;
+				}
+
+			} else {
+				if (e.changedTouches[0].clientX - this.startX > 0) {
+					slide.x = slide.x - 1 === 0 ? slide.length : slide.x - 1;
+
+					if (slide.x < slide.length) {
+						slide.span[slide.x].className = "prompt-span";
+					} else {
+						slide.span[0].className = "prompt-span";
+					}
+
+					slide.span[slide.x - 1].className += " prompt-span-current";
+				} else {
+					slide.x = slide.x + 1 > slide.length ? 1 : slide.x + 1;
+
+					if (slide.x - 2 < 0) {
+						slide.span[slide.length - 1].className = "prompt-span";
+					} else {
+						slide.span[slide.x - 2].className = "prompt-span";
+					}
+
+					slide.span[slide.x - 1].className += " prompt-span-current";
+				}
+			}
+		},
 		touchEnd: function(e) {
 			var slide = this.parentNode.slide;
 
-			if (this.direction) {
-				if (Math.abs(e.changedTouches[0].clientX - this.startX) >= this.clientWidth / 2) {
-					this.style["-webkit-transition"] = "all 0.3s ease";
-					this.style["-webkit-transform"] = e.changedTouches[0].clientX - this.startX > 0 ? "translate3d(" + this.clientWidth + "px, 0, 0)" : "translate3d(" + -this.clientWidth + "px, 0, 0)";
+			if ((+ new Date() - this.time) < 300) {
+				slide.move.call(this, e, slide);
 
-					if (e.changedTouches[0].clientX - this.startX > 0) {
-						this.parentNode.children[this.nextIndex].style["-webkit-transition"] = "none";
-						this.parentNode.children[this.nextIndex].style["-webkit-transform"] = "translate3d(" + -this.clientWidth + "px, 0, 0)";
+			} else {
+				if (this.direction) {
+					if (Math.abs(e.changedTouches[0].clientX - this.startX) >= this.clientWidth / 2) {
+						slide.move.call(this, e, slide);
+					} else {
+						this.style["-webkit-transition"] = "all 0.3s ease";
+						this.style["-webkit-transform"] = "translate3d(" + 0 + "px, 0, 0)";
+
+						this.parentNode.children[this.nextIndex].style["-webkit-transition"] = "all 0.3s ease";
+						this.parentNode.children[this.nextIndex].style["-webkit-transform"] = "translate3d(" + this.clientWidth + "px, 0, 0)";
 
 						this.parentNode.children[this.previousIndex].style["-webkit-transition"] = "all 0.3s ease";
-						this.parentNode.children[this.previousIndex].style["-webkit-transform"] = "translate3d(" + 0 + "px, 0, 0)";
-					} else {
-						this.parentNode.children[this.nextIndex].style["-webkit-transition"] = "all 0.3s ease";
-						this.parentNode.children[this.nextIndex].style["-webkit-transform"] = "translate3d(" + 0 + "px, 0, 0)";
-
 						this.parentNode.children[this.previousIndex].style["-webkit-transform"] = "translate3d(" + -this.clientWidth + "px, 0, 0)";
-
-						this.parentNode.children[this.nextIndex + 1 === this.parentNode.children.length ? 0 : this.nextIndex + 1].style["-webkit-transition"] = "none";
-						this.parentNode.children[this.nextIndex + 1 === this.parentNode.children.length ? 0 : this.nextIndex + 1].style["-webkit-transform"] = "translate3d(" + this.clientWidth + "px, 0, 0)";
 					}
-
-					if (slide.promptStyle === "text") {
-						if (e.changedTouches[0].clientX - this.startX > 0) {
-							slide.span.innerHTML = slide.x = slide.x - 1 === 0 ? slide.length : slide.x - 1;
-						} else {
-							slide.span.innerHTML = slide.x = slide.x + 1 > slide.length ? 1 : slide.x + 1;
-						}
-
-					} else {
-						if (e.changedTouches[0].clientX - this.startX > 0) {
-							slide.x = slide.x - 1 === 0 ? slide.length : slide.x - 1;
-
-							if (slide.x < slide.length) {
-								slide.span[slide.x].className = "prompt-span";
-							} else {
-								slide.span[0].className = "prompt-span";
-							}
-
-							slide.span[slide.x - 1].className += " prompt-span-current";
-						} else {
-							slide.x = slide.x + 1 > slide.length ? 1 : slide.x + 1;
-
-							if (slide.x - 2 < 0) {
-								slide.span[slide.length - 1].className = "prompt-span";
-							} else {
-								slide.span[slide.x - 2].className = "prompt-span";
-							}
-
-							slide.span[slide.x - 1].className += " prompt-span-current";
-						}
-					}
-				} else {
-					this.style["-webkit-transition"] = "all 0.3s ease";
-					this.style["-webkit-transform"] = "translate3d(" + 0 + "px, 0, 0)";
-
-					this.parentNode.children[this.nextIndex].style["-webkit-transition"] = "all 0.3s ease";
-					this.parentNode.children[this.nextIndex].style["-webkit-transform"] = "translate3d(" + this.clientWidth + "px, 0, 0)";
-
-					this.parentNode.children[this.previousIndex].style["-webkit-transition"] = "all 0.3s ease";
-					this.parentNode.children[this.previousIndex].style["-webkit-transform"] = "translate3d(" + -this.clientWidth + "px, 0, 0)";
 				}
-
-				slide.timer = setInterval(function() {
-					slide.swipe();
-				}, slide.interval);
 			}
+
+			slide.timer = setInterval(function() {
+				slide.swipe();
+			}, slide.interval);
 		}
 	};
 
