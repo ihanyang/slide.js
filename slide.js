@@ -313,9 +313,11 @@
 				}
 			}
 
-			slide.timer = setInterval(function() {
-				slide.swipe();
-			}, slide.interval);
+			if (this.direction) {
+				slide.timer = setInterval(function() {
+					slide.swipe();
+				}, slide.interval);
+			}
 		}
 	};
 
