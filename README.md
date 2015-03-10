@@ -18,7 +18,7 @@ params: <br>
 var slide = new Slide({
 	target: ".slide",
 	imgs: ["images/a.jpg", "images/b.jpg", "images/c.jpg", "images/d.jpg", "images/e.jpg"],
-	links: ["baidu.com", "baidu.com", "baidu.com", "baidu.com", "baidu.com"],
+	contents: ["baidu.com", "baidu.com", "baidu.com", "baidu.com", "baidu.com"],
 	interval: 3000,
 	promptStyle: "text"
 });
