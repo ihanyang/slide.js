@@ -76,6 +76,9 @@
 
 				// 挂载 touch 事件
 				this.slideItems[i].addEventListener("touchstart", this.touchStart, false);
+
+				// 挂载 transition 事件
+				this.slideItems[i].addEventListener("transitionend", this.complete, false);
 			}
 
 			if (this.promptStyle === "text") {
@@ -207,6 +210,7 @@
 				this.addEventListener("touchmove", this.parentNode.slide.touchMove, false);
 				this.addEventListener("touchend", this.parentNode.slide.touchEnd, false);
 			}
+			console.dir(this.parentNode.slide);
 		},
 		touchMove: function(e) {
 			if (this.first) {
@@ -214,6 +218,7 @@
 					this.direction = true;
 					this.first = false;
 					clearInterval(this.parentNode.slide.timer);
+					console.dir(this.parentNode.slide);
 				} else {
 					this.first = false;
 					return false;
@@ -239,18 +244,24 @@
 				e.preventDefault();
 			}
 		},
+		complete: function () {
+			// 绑定touch事件
+			this.addEventListener("touchstart", this.parentNode.slide.touchStart, false);
+			this.addEventListener("touchmove", this.parentNode.slide.touchMove, false);
+			this.addEventListener("touchend", this.parentNode.slide.touchEnd, false);
+		},
 		move: function(e, slide) {
-			this.style["-webkit-transition"] = "all 0.3s ease";
+			this.style["-webkit-transition"] = "all 0.2s ease";
 			this.style["-webkit-transform"] = e.changedTouches[0].clientX - this.startX > 0 ? "translate3d(" + this.clientWidth + "px, 0, 0)" : "translate3d(" + -this.clientWidth + "px, 0, 0)";
 
 			if (e.changedTouches[0].clientX - this.startX > 0) {
 				this.parentNode.children[this.nextIndex].style["-webkit-transition"] = "none";
 				this.parentNode.children[this.nextIndex].style["-webkit-transform"] = "translate3d(" + -this.clientWidth + "px, 0, 0)";
 
-				this.parentNode.children[this.previousIndex].style["-webkit-transition"] = "all 0.3s ease";
+				this.parentNode.children[this.previousIndex].style["-webkit-transition"] = "all 0.2s ease";
 				this.parentNode.children[this.previousIndex].style["-webkit-transform"] = "translate3d(" + 0 + "px, 0, 0)";
 			} else {
-				this.parentNode.children[this.nextIndex].style["-webkit-transition"] = "all 0.3s ease";
+				this.parentNode.children[this.nextIndex].style["-webkit-transition"] = "all 0.2s ease";
 				this.parentNode.children[this.nextIndex].style["-webkit-transform"] = "translate3d(" + 0 + "px, 0, 0)";
 
 				this.parentNode.children[this.previousIndex].style["-webkit-transform"] = "translate3d(" + -this.clientWidth + "px, 0, 0)";
@@ -291,7 +302,9 @@
 			}
 		},
 		touchEnd: function(e) {
-			var slide = this.parentNode.slide;
+			var i,
+				length = this.parentNode.children,
+				slide = this.parentNode.slide;
 
 			if ((+ new Date() - this.time) < 300) {
 				slide.move.call(this, e, slide);
@@ -317,6 +330,13 @@
 				slide.timer = setInterval(function() {
 					slide.swipe();
 				}, slide.interval);
+			}
+
+			for (i = 0; i < length; i++) {
+				// 取消touch事件
+				this.parentNode.children[i].removeEventListener("touchstart", this.parentNode.slide.touchStart, false);
+				this.parentNode.children[i].removeEventListener("touchmove", this.parentNode.slide.touchMove, false);
+				this.parentNode.children[i].removeEventListener("touchend", this.parentNode.slide.touchEnd, false);
 			}
 		}
 	};
